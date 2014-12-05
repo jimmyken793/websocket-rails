@@ -45,6 +45,8 @@ module WebsocketRails
 
     def make_private
       unless config.keep_subscribers_when_private?
+        
+        trigger "unsubscribed"
         @subscribers.clear
       end
       @private = true

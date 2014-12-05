@@ -13,7 +13,7 @@ module WebsocketRails
     context ".register" do
       it "should store a reference to the adapter in the adapters array" do
         ConnectionAdapters.register( ConnectionAdapters::Test )
-        ConnectionAdapters.adapters.include?( ConnectionAdapters::Test ).should be_true
+        ConnectionAdapters.adapters.include?( ConnectionAdapters::Test ).should eq(true)
       end
     end
 
@@ -79,7 +79,7 @@ module WebsocketRails
       context "new adapter" do
         it "should register itself in the adapters array when inherited" do
           adapter = Class.new( ConnectionAdapters::Base )
-          ConnectionAdapters.adapters.include?( adapter ).should be_true
+          ConnectionAdapters.adapters.include?( adapter ).should eq(true)
         end
 
         it "should create a new DataStore::Connection instance" do

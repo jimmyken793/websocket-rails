@@ -28,7 +28,6 @@ Gem::Specification.new do |s|
   s.add_dependency "redis-objects"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency 'rspec-matchers-matchers'
 
   s.post_install_message = "Welcome to WebsocketRails v#{WebsocketRails::VERSION}!"
 
