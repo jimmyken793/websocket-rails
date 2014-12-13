@@ -44,10 +44,11 @@ module WebsocketRails
     end
 
     def make_private
-      unless config.keep_subscribers_when_private?
-        
-        trigger "unsubscribed"
-        @subscribers.clear
+      if !@private
+        unless config.keep_subscribers_when_private?
+          trigger "unsubscribed"
+          @subscribers.clear
+        end
       end
       @private = true
     end
