@@ -6,8 +6,11 @@ module WebsocketRails
 
     before do
       @dispatcher = double(:dispatcher)
+
       Dispatcher.stub(:new).and_return @dispatcher
-      @event = SpecHelperEvent.new('my_event', data: 'my_data')
+      @connection_manager = SpecHelperConnectionManager.new(@request)
+      @connection = @connection_manager.new_connection
+      @event = SpecHelperEvent.new(@connection, 'my_event', data: 'my_data')
     end
 
     describe 'initialize' do

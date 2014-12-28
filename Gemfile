@@ -18,6 +18,7 @@ gem "guard"
 gem "guard-rspec"
 gem "guard-coffeescript"
 gem "rb-fsevent"
+gem "rspec-matchers-matchers", :git => "https://github.com/jimmyken793/rspec-matchers-matchers.git"
 
 platforms :jruby do
   gem 'activerecord-jdbcsqlite3-adapter', :require => 'jdbc-sqlite3', :require => 'arjdbc'

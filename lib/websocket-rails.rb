@@ -3,8 +3,10 @@ require "logger"
 require "thin"
 
 module WebsocketRails
-
   class << self
+
+    attr_accessor :dispatcher
+
     def setup
       yield config
     end

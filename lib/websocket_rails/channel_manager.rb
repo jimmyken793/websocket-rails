@@ -3,6 +3,14 @@ require 'redis-objects'
 module WebsocketRails
 
   class << self
+    def private_channel_patterns
+      @patterns ||= []
+    end
+
+    def add_private_channel_pattern(pattern)
+      @patterns ||= []
+      @patterns << pattern
+    end
 
     def channel_manager
       @channel_manager ||= ChannelManager.new
@@ -42,7 +50,18 @@ module WebsocketRails
     end
 
     def [](channel)
-      @channels[channel] ||= Channel.new channel
+      c = @channels[channel]
+      if c.nil?
+        c = Channel.new channel
+        WebsocketRails.private_channel_patterns.each{|pattern|
+          if channel =~ pattern
+            c.make_private
+          end
+        }
+        @channels[channel] = c
+        return c
+      end
+      return c
     end
 
     def unsubscribe(connection)

@@ -26,7 +26,7 @@ module WebsocketRails
 
       it "should add the connection to the subscriber pool" do
         subject.subscribe connection
-        subject.subscribers.include?(connection).should be_true
+        expect(subject.subscribers.include?(connection)).to eq(true)
       end
     end
 
@@ -38,12 +38,12 @@ module WebsocketRails
       it "should remove connection from subscriber pool" do
         subject.subscribe connection
         subject.unsubscribe connection
-        subject.subscribers.include?(connection).should be_false
+        subject.subscribers.include?(connection).should eq(false)
       end
 
       it "should do nothing if connection is not subscribed to channel" do
         subject.unsubscribe connection
-        subject.subscribers.include?(connection).should be_false
+        subject.subscribers.include?(connection).should eq(false)
       end
 
       it "should trigger an event when subscriber parts" do
@@ -108,13 +108,13 @@ module WebsocketRails
       end
 
       it "should be public by default" do
-        subject.instance_variable_get(:@private).should_not be_true
+        subject.instance_variable_get(:@private).should_not eq(true)
       end
 
       describe "#make_private" do
         it "should set the @private instance variable to true" do
           subject.make_private
-          subject.instance_variable_get(:@private).should be_true
+          subject.instance_variable_get(:@private).should eq(true)
         end
 
         context "when Configuration#keep_subscribers_when_private? is false" do
@@ -141,12 +141,12 @@ module WebsocketRails
       describe "#is_private?" do
         it "should return true if the channel is private" do
           subject.instance_variable_set(:@private,true)
-          subject.is_private?.should be_true
+          subject.is_private?.should eq(true)
         end
 
         it "should return false if the channel is public" do
           subject.instance_variable_set(:@private,false)
-          subject.is_private?.should_not be_true
+          subject.is_private?.should_not eq(true)
         end
       end
 

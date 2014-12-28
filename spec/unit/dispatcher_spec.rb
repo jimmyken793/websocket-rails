@@ -152,34 +152,34 @@ module WebsocketRails
       it 'should return false when RecordInvalid is not defined' do
         if Object.const_defined?('ActiveRecord')
           swizzle_module_const(ActiveRecord, 'RecordInvalid','TempRecordInvalid') do
-            subject.send(:record_invalid_defined?).should be_false
+            subject.send(:record_invalid_defined?).should eq(false)
           end
         else
           set_temp_module_const(Object, 'ActiveRecord', Module.new) do
-            subject.send(:record_invalid_defined?).should be_false
+            subject.send(:record_invalid_defined?).should eq(false)
           end
         end
       end
 
       it 'should return false when ActiveRecord is not defined' do
         swizzle_module_const(Object, 'ActiveRecord', 'TempActiveRecord') do
-          subject.send(:record_invalid_defined?).should be_false
+          subject.send(:record_invalid_defined?).should eq(false)
         end
       end
 
       it 'should return true if ActiveRecord::RecordInvalid is defined' do
         if Object.const_defined?('ActiveRecord')
           if ActiveRecord.const_defined?('RecordInvalid')
-            subject.send(:record_invalid_defined?).should be_true
+            subject.send(:record_invalid_defined?).should eq(true)
           else
             set_temp_module_const(ActiveRecord, 'RecordInvalid', Class.new) do
-              subject.send(:record_invalid_defined?).should be_true
+              subject.send(:record_invalid_defined?).should eq(true)
             end
           end
         else
           set_temp_module_const(Object, 'ActiveRecord', Module.new) do
             set_temp_module_const(ActiveRecord, 'RecordInvalid', Class.new) do
-              subject.send(:record_invalid_defined?).should be_true
+              subject.send(:record_invalid_defined?).should eq(true)
             end
           end
         end
