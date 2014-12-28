@@ -31,8 +31,8 @@ module WebsocketRails
 
       end
 
-      def new_event(event_name, options={})
-        SpecHelperEvent.new(self, event_name, options)
+      def new_event(event_name, data)
+        SpecHelperEvent.new(self, event_name, {:data=>data, :connection=>self})
       end
     end
   end
@@ -55,7 +55,7 @@ module WebsocketRails
 
   class SpecHelperEvent < Event
 
-    attr_reader :dispatcher, :triggered
+    attr_reader :triggered, :connection
 
     alias :triggered? :triggered
 
@@ -63,33 +63,44 @@ module WebsocketRails
       super(event_name, options)
       @triggered = false
       @connection = connection
-      @dispatcher = connection.dispatcher
     end
 
     def trigger
       @triggered = true
+      triggered_with(self)
     end
 
-    def connection
-      @connection
+    def triggered_with(arg)
+    end
+
+    def dispatcher
+      @connection.dispatcher
     end
 
     def dispatch
-      @dispatcher.dispatch(self)
+      @connection.dispatcher.dispatch(self)
       self
     end
 
   end
 
 end
+def dispatcher
+  connection_manager.dispatcher
+end
+
 def connection_manager
-  @conn_manager ||= WebsocketRails::SpecHelperConnectionManager.new(@request)
+  if @conn_manager.nil?
+    @conn_manager = WebsocketRails::SpecHelperConnectionManager.new(@request)
+    WebsocketRails.dispatcher = @conn_manager.dispatcher
+  end
+  @conn_manager
 end
 
 def connection
   @connection ||= connection_manager.new_connection
 end
 
-def create_event(name, data)
-  connection.new_event(name, {:data=>data, :connection=>connection})
+def create_event(name, data={})
+  connection.new_event(name, data)
 end

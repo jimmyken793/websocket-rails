@@ -67,7 +67,11 @@ module WebsocketRails
       end
 
       def private_channel(channel)
-        WebsocketRails[channel].make_private
+        if channel.class==Regexp
+          WebsocketRails.add_private_channel_pattern(channel)
+        else
+          WebsocketRails[channel].make_private
+        end
       end
 
     end

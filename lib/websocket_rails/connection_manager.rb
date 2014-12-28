@@ -30,7 +30,7 @@ module WebsocketRails
     def initialize
       @connections = {}
       @dispatcher  = Dispatcher.new(self)
-
+      WebsocketRails.dispatcher = @dispatcher
       if WebsocketRails.synchronize?
         EM.next_tick do
           Fiber.new {

@@ -121,7 +121,11 @@ module WebsocketRails
           :full_messages => ex.record.errors.full_messages
         }
       else
-        ex if ex.respond_to?(:to_json)
+        # ex if ex.respond_to?(:to_json)
+        {
+          "title"=>ex.inspect,
+          "backtrace"=>ex.backtrace
+        }
       end
     end
 
