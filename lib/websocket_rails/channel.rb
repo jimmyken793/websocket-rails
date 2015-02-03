@@ -14,6 +14,10 @@ module WebsocketRails
     end
 
     def subscribe(connection)
+      if @subscribers.include? connection
+        send_token connection
+        return
+      end
       info "#{connection} subscribed to channel #{@name}"
       trigger 'subscriber_join', connection.user if config.broadcast_subscriber_events?
       @subscribers << connection
